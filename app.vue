@@ -59,7 +59,7 @@ const fetchReply = async (message, parentMessageId) => {
   }
 }
 
-const theme = ref('light')
+const theme = ref('dark')
 const toggleTheme = () => {
   theme.value = theme.value === 'light' ? 'dark' : 'light'
 }
