@@ -5,7 +5,7 @@ import * as components from 'vuetify/components'
 
 export default defineNuxtPlugin(nuxtApp => {
     const vuetify = createVuetify({
-        ssr: true,
+        ssr: false,
         icons: {
             defaultSet: 'md',
             aliases,
@@ -14,6 +14,9 @@ export default defineNuxtPlugin(nuxtApp => {
             }
         },
         components,
+        display: {
+            mobileBreakpoint: 'sm'
+        }
         // directives
     })
 

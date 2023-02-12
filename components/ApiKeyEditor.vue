@@ -15,11 +15,11 @@
 
 <script setup>
 const KEY = "chatgpt-api-key"
-const currentApiKey = ref(localStorage.getItem(KEY) ?? "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")
+const currentApiKey = ref(localStorage.getItem(KEY) ?? "")
 const apiKeyInput = ref(currentApiKey.value)
 const showApiKeyEditor = ref(false)
 const submitApiKey = async () => {
-  localStorage.setItem(KEY, modelNameInput.value)
+  localStorage.setItem(KEY, apiKeyInput.value)
   currentApiKey.value = apiKeyInput.value
   showApiKeyEditor.value = false
 }

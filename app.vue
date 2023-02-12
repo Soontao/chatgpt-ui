@@ -47,7 +47,7 @@ const fetchReply = async (message, parentMessageId) => {
         if (currentConversation.value.messages[currentConversation.value.messages.length - 1].from === 'ai') {
           currentConversation.value.messages[currentConversation.value.messages.length - 1].message += data
         } else {
-          currentConversation.value.messages.push({id: null, from: 'ai', message: data})
+          currentConversation.value.messages.push({ id: null, from: 'ai', message: data })
         }
         scrollChatWindow()
       },
@@ -72,7 +72,7 @@ const currentConversation = ref({})
 
 const grab = ref(null)
 const scrollChatWindow = () => {
-  grab.value.scrollIntoView({behavior: 'smooth'})
+  grab.value.scrollIntoView({ behavior: 'smooth' })
 }
 
 const createNewConversation = () => {
@@ -88,7 +88,7 @@ const send = (message) => {
       parentMessageId = lastMessage.id
     }
   }
-  currentConversation.value.messages.push({from: 'me', parentMessageId: parentMessageId, message: message})
+  currentConversation.value.messages.push({ from: 'me', parentMessageId: parentMessageId, message: message })
   fetchReply(message, parentMessageId)
   scrollChatWindow()
 }
@@ -107,42 +107,31 @@ const showSnackbar = (text) => {
 onNuxtReady(() => {
   createNewConversation()
 })
+
+const showDrawer = localStorage.getItem('chatgpt-api-key') === undefined || localStorage.getItem('chatgpt-api-key') === ""
 </script>
 
 <template>
-  <v-app
-      :theme="theme"
-  >
-    <v-navigation-drawer
-        theme="dark"
-        permanent
-    >
+  <v-app :theme="theme">
+    <v-navigation-drawer theme="dark" :permanent="showDrawer">
       <v-list>
-        <ModelNameEditor/>
-        <ApiKeyEditor/>
+        <ModelNameEditor />
+        <ApiKeyEditor />
       </v-list>
 
       <template v-slot:append>
         <v-divider></v-divider>
         <v-list>
-<!--          <v-list-item title="Clear conversations"></v-list-item>-->
-          <v-list-item
-              :prepend-icon="theme === 'light' ? 'dark_mode' : 'light_mode'"
-              :title="(theme === 'light' ? 'Dark' : 'Light') + ' mode'"
-              @click="toggleTheme"
-          ></v-list-item>
+          <!--          <v-list-item title="Clear conversations"></v-list-item>-->
+          <v-list-item :prepend-icon="theme === 'light' ? 'dark_mode' : 'light_mode'"
+            :title="(theme === 'light' ? 'Dark' : 'Light') + ' mode'" @click="toggleTheme"></v-list-item>
         </v-list>
       </template>
     </v-navigation-drawer>
     <v-main>
       <div ref="chatWindow">
-        <v-card
-            rounded="0"
-            elevation="0"
-            v-for="(conversation, index) in currentConversation.messages"
-            :key="index"
-            :variant="conversation.from === 'ai' ? 'tonal' : ''"
-        >
+        <v-card rounded="0" elevation="0" v-for="(conversation, index) in currentConversation.messages" :key="index"
+          :variant="conversation.from === 'ai' ? 'tonal' : ''">
           <v-container>
             <v-card-text class="text-caption text-disabled">{{ conversation.from }}</v-card-text>
             <v-card-text>
@@ -158,13 +147,7 @@ onNuxtReady(() => {
     </v-main>
     <v-footer app class="d-flex flex-column">
       <div class="px-16 w-100 d-flex align-center">
-        <v-btn
-            v-show="fetchingResponse"
-            icon="close"
-            title="stop"
-            class="mr-3"
-            @click="stop"
-        ></v-btn>
+        <v-btn v-show="fetchingResponse" icon="close" title="stop" class="mr-3" @click="stop"></v-btn>
         <MsgEditor :send-message="send" :disabled="fetchingResponse" :loading="fetchingResponse" />
       </div>
 
@@ -172,18 +155,11 @@ onNuxtReady(() => {
         {{ new Date().getFullYear() }} — {{ runtimeConfig.public.appName }}
       </div>
     </v-footer>
-    <v-snackbar
-        v-model="snackbar"
-        multi-line
-    >
+    <v-snackbar v-model="snackbar" multi-line>
       {{ snackbarText }}
 
       <template v-slot:actions>
-        <v-btn
-            color="red"
-            variant="text"
-            @click="snackbar = false"
-        >
+        <v-btn color="red" variant="text" @click="snackbar = false">
           Close
         </v-btn>
       </template>
