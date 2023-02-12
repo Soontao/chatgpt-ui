@@ -108,12 +108,17 @@ onNuxtReady(() => {
   createNewConversation()
 })
 
-const showDrawer = localStorage.getItem('chatgpt-api-key') === undefined || localStorage.getItem('chatgpt-api-key') === ""
+const drawer = ref(false)
+
 </script>
 
 <template>
   <v-app :theme="theme">
-    <v-navigation-drawer theme="dark" :permanent="showDrawer">
+    <v-app-bar prominent>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>ChatGPT UI</v-toolbar-title>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" theme="dark" temporary="">
       <v-list>
         <ModelNameEditor />
         <ApiKeyEditor />
@@ -146,8 +151,8 @@ const showDrawer = localStorage.getItem('chatgpt-api-key') === undefined || loca
       </v-container>
     </v-main>
     <v-footer app class="d-flex flex-column">
-      <div class="px-16 w-100 d-flex align-center">
-        <v-btn v-show="fetchingResponse" icon="close" title="stop" class="mr-3" @click="stop"></v-btn>
+      <div class="w-100 d-flex align-center">
+        <v-btn v-show="fetchingResponse" icon="close" title="stop" @click="stop"></v-btn>
         <MsgEditor :send-message="send" :disabled="fetchingResponse" :loading="fetchingResponse" />
       </div>
 
