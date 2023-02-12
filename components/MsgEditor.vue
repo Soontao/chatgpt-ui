@@ -1,7 +1,7 @@
 <template>
   <v-textarea variant="underlined" v-model="message" clearable label="Message" placeholder="Type your message here" rows="1"
-    :auto-grow="autoGrow" :disabled="disabled" :loading="loading" hide-details append-inner-icon="send"
-    @keyup.enter="send" @click:append="send"></v-textarea>
+    :auto-grow="autoGrow" :disabled="disabled" :loading="loading" hide-details append-inner-icon="send" 
+    @keyup.enter="send" @click:append-inner="send"></v-textarea>
 </template>
 
 <script>
