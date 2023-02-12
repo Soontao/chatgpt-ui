@@ -1,6 +1,5 @@
 import ChatGPTClient from '@waylaidwanderer/chatgpt-api'
 import { PassThrough } from 'node:stream'
-import {getSetting, setSetting} from "~/utils/keyv";
 
 const serializeSSEEvent = (chunk) => {
     let payload = "";
@@ -28,6 +27,10 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const conversationId = body.conversationId ? body.conversationId.toString() : undefined
     const parentMessageId = body.parentMessageId ? body.parentMessageId.toString() : undefined
+
+    const modelName = body?.modelName?.toString?.()
+    const apiKey = body?.apiKey?.toString?.()
+
     const tunnel = new PassThrough()
     const writeToTunnel = (data) => {
         tunnel.write(serializeSSEEvent(data))
@@ -38,8 +41,6 @@ export default defineEventHandler(async (event) => {
         'Connection': 'keep-alive'
     })
 
-    const modelName = await getSetting('modelName')
-    const apiKey = await getSetting('apiKey')
 
     if (!apiKey) {
         writeToTunnel({
@@ -85,21 +86,24 @@ export default defineEventHandler(async (event) => {
             parentMessageId,
             onProgress: (token) => {
                 // console.log(token)
-                writeToTunnel({ data: JSON.stringify({
+                writeToTunnel({
+                    data: JSON.stringify({
                         type: 'token',
                         data: token
                     })
                 })
             }
         });
-        writeToTunnel({ data: JSON.stringify({
+        writeToTunnel({
+            data: JSON.stringify({
                 type: 'done',
                 data: response
-            }) })
+            })
+        })
         console.log(response)
     } catch (e) {
         const code = e?.json?.data?.code || 503;
-        const message = e?.json?.error?.message || 'There was an error communicating with ChatGPT.';
+        const message = e?.json?.error?.message || `There was an error communicating with ChatGPT. ${e?.message}`;
         writeToTunnel({
             event: 'error',
             data: JSON.stringify({

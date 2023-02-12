@@ -14,12 +14,13 @@
 </template>
 
 <script setup>
-const KEY = "chatgpt-api-key"
-const currentApiKey = ref(localStorage.getItem(KEY) ?? "")
+import { CHAT_GPT } from '~~/constants';
+
+const currentApiKey = ref(localStorage.getItem(CHAT_GPT.API_KEY) ?? "")
 const apiKeyInput = ref(currentApiKey.value)
 const showApiKeyEditor = ref(false)
 const submitApiKey = async () => {
-  localStorage.setItem(KEY, apiKeyInput.value)
+  localStorage.setItem(CHAT_GPT.API_KEY, apiKeyInput.value)
   currentApiKey.value = apiKeyInput.value
   showApiKeyEditor.value = false
 }

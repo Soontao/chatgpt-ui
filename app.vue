@@ -1,6 +1,7 @@
 <script setup>
 import { fetchEventSource } from '@microsoft/fetch-event-source'
 import ApiKeyEditor from "./components/ApiKeyEditor";
+import { CHAT_GPT } from './constants';
 
 const runtimeConfig = useRuntimeConfig()
 const fetchingResponse = ref(false)
@@ -16,7 +17,9 @@ const fetchReply = async (message, parentMessageId) => {
       body: JSON.stringify({
         message: message,
         parentMessageId: parentMessageId,
-        conversationId: currentConversation.value.id
+        conversationId: currentConversation.value.id,
+        modelName: localStorage.getItem(CHAT_GPT.MODEL_NAME) ?? CHAT_GPT.DEFAULT_MODEL,
+        apiKey: localStorage.getItem(CHAT_GPT.API_KEY) ?? ""
       }),
       onopen(response) {
         if (response.status === 200) {

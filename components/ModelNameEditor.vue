@@ -14,12 +14,13 @@
 </template>
 
 <script setup>
-const KEY = "chatgpt-model-name"
-const currentModelName = ref(localStorage.getItem(KEY) ?? "text-davinci-003")
+import { CHAT_GPT } from '~~/constants';
+
+const currentModelName = ref(localStorage.getItem(CHAT_GPT.MODEL_NAME) ?? CHAT_GPT.DEFAULT_MODEL)
 const modelNameInput = ref(currentModelName.value)
 const showModelNameEditor = ref(false)
 const submitModelName = async () => {
-  localStorage.setItem(KEY, modelNameInput.value)
+  localStorage.setItem(CHAT_GPT.MODEL_NAME, modelNameInput.value)
   currentModelName.value = modelNameInput.value
   showModelNameEditor.value = false
 }
