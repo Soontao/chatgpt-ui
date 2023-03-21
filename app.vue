@@ -119,7 +119,7 @@ const drawer = ref(false)
   <v-app :theme="theme">
     <v-app-bar prominent>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>ChatGPT UI</v-toolbar-title>
+      <v-toolbar-title>(华创传媒志国) ChatGPT UI</v-toolbar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" theme="dark" temporary="">
       <v-list>
