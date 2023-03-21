@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const appName = 'ChatGPT UI powered by Theo Sun'
+const appName = 'ChatGPT UI (华创传媒志国)'
 
 export default defineNuxtConfig({
     ssr: false,
